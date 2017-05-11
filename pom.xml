@@ -9,10 +9,10 @@
 	<packaging>jar</packaging>
 	<groupId>redis.clients</groupId>
 	<artifactId>jedis</artifactId>
-	<version>3.0.0-SNAPSHOT</version>
+	<version>3.0.0-MR</version>
 	<name>Jedis</name>
 	<description>Jedis is a blazingly small and sane Redis java client.</description>
-  <url>https://github.com/xetorthio/jedis</url>
+  <!--<url>https://github.com/xetorthio/jedis</url>-->
 
 	<mailingLists>
 		<mailingList>
@@ -52,6 +52,22 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>fluent-hc</artifactId>
+			<version>4.5.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.28</version>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>3.2.5</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
