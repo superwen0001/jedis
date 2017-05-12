@@ -97,7 +97,16 @@ public class JedisMrPool extends JedisPoolAbstract {
     @Override
     public Jedis getResource() {
         while (true) {
-            Jedis jedis = super.getResource();
+            Jedis jedis = null;
+            try {
+                jedis = super.getResource();
+            }catch (JedisConnectionException e){
+                log.error("",e);
+                jedis.close();
+                init();
+                continue;
+            }
+
             jedis.setDataSource(this);
 
             // get a reference because it can change concurrently
@@ -117,7 +126,7 @@ public class JedisMrPool extends JedisPoolAbstract {
     }
 
 
-    protected static class JedisProxy implements MethodInterceptor {
+    protected static class JedisProxy implements MethodInterceptor{
         private static List<String> interceptMethods;
 
         {
@@ -127,6 +136,9 @@ public class JedisMrPool extends JedisPoolAbstract {
                 interceptMethods.add(method.getName());
             }
         }
+
+//        redis.clients.jedis.Protocol
+
 
         private static Enhancer enhancer = new Enhancer();
         private Jedis jedis;
@@ -161,6 +173,7 @@ public class JedisMrPool extends JedisPoolAbstract {
                 try{
                     return methodProxy.invoke(jedis, args);
                 }catch (JedisConnectionException e){
+                    jedis.close();
                     jedisMrPool.init();
                     throw e;
                 }
